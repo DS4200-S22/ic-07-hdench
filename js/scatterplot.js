@@ -18,10 +18,10 @@ const svg3 = d3
 
   d3.csv("data/scatter.csv").then((data3) => {
 
-    let maxX3 = d3.max(data3, (d) => { return d.x; });
+    let maxX3 = d3.max(data3, (d) => { return d.day; });
     console.log("Max x: ", + maxX3)
     
-    let maxY3 = d3.max(data3, (d) => { return d.y; });
+    let maxY3 = d3.max(data3, (d) => { return d.score; });
     console.log("Max y: ", + maxY3)
     
     let xScale3 = d3.scaleLinear()
@@ -33,7 +33,7 @@ const svg3 = d3
                 .range([height - margin.bottom, margin.top])
 
   // TODO: What does each line of this code do?  
-  svg3.append("g") // add a placeholder svg inside svg1
+  svg3.append("g") // add a placeholder svg inside svg3
     .attr("transform", `translate(${margin.left}, 0)`) 
       // ^ moves axis to left margin of svg
     .call(d3.axisLeft(yScale3))  // calls built in d3 function that
@@ -41,25 +41,23 @@ const svg3 = d3
     .attr("font-size", '20px');  // set font size
 
   // TODO: What does each line of this code do? 
-  svg3.append("g") // add a placeholder svg inside svg1
+  svg3.append("g") // add a placeholder svg inside svg3
       .attr("transform", `translate(0,${height - margin.bottom})`) 
       // ^ moves axis to bottom of svg
-      .call(d3.axisBottom(xScale3)    // calls built in d3 func that builds
-                                      // x axis off of scale
-              .tickFormat(i => data3[i].name))  
-              // ^ sets the name of the tick on axis? since its a string
+      .call(d3.axisBottom(xScale3))    // calls built in d3 func that builds
+                                      // x axis off of scale  
       .attr("font-size", '20px'); // set font size
 
   // create third tooltop
   const tooltip3 = d3.select("#csv-scatter") // selects all svgs with id
                   .append("div") // preps for adding to div
-                  .attr('id', "tooltip3") // adds id to svg called tooltip1
+                  .attr('id', "tooltip3") // adds id to svg called tooltip3
                   .style("opacity", 0)  // sets style to opacity = 0
                   .attr("class", "tooltip"); // sets class to svg called tooltip
 
   // THIRD EVENT WATCHERS 
   const mouseover3 = function(event, d) { // creates a function based off of event and data (mouseover)
-    tooltip3.html("Name: " + d.name + "<br> Day: " + d.score + "<br>") // adds text to tooltip1
+    tooltip3.html("Day: " + d.day + "<br> Score: " + d.score + "<br>") // adds text to tooltip1
             .style("opacity", 1);  // sets opacity = 1 (can be seen)
   }
 
@@ -75,17 +73,18 @@ const svg3 = d3
   }
 
   console.log(data3);
-  svg3.selectAll("circle") // Select all bars in SVG
+
+  svg3.selectAll("circle") // Select all circles in SVG
     .data(data3)        
     .enter()            
       .append("circle")
-      .attr("cx", (d) => { return d.x; })
-      .attr("cy", (d) => { return d.y; })
-      .attr("r", 5)
-      .attr("fill", (d) => { return d.color; })
-      .on("mouseover", mouseover3) // calls funct when event happens to the bar
-      .on("mousemove", mousemove3) // calls funct when event happens to the bar
-      .on("mouseleave", mouseleave3); // calls funct when event happens to the bar
+      .attr("class", "circle") // add class = circle to these attributes
+      .attr("cx", (d) => xScale3(d.day))
+      .attr("cy", (d) => yScale3(d.score))
+      .attr("r", 10)
+      .on("mouseover", mouseover3) // calls funct when event happens to the circle
+      .on("mousemove", mousemove3) // calls funct when event happens to the circle
+      .on("mouseleave", mouseleave3); // calls funct when event happens to the circle
 
 })
 
