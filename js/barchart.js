@@ -183,8 +183,8 @@ const svg2 = d3
 
   // TODO: What does each line of this code do? 
   const mousemove2 = function(event, d) { // creates a function based off of event and data (mouse moving)
-    tooltip2.style("left", (event.x)+"px") //  UNSURE
-            .style("top", (event.y + yTooltipOffset) +"px"); // UNSURE
+    tooltip2.style("left", (event.pageX)+"px") //  UNSURE
+            .style("top", (event.pageY + yTooltipOffset) +"px"); // UNSURE
   }
 
   // TODO: What does this code do? 
